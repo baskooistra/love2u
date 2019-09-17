@@ -43,6 +43,7 @@ namespace Love2u.IdentityProvider
             services.AddDefaultIdentity<User>()
                 .AddEntityFrameworkStores<Love2uIdentityContext>();
             services.AddIdentityServer()
+                .AddDeveloperSigningCredential()
                 .AddOperationalStore(options =>
                 {
                     options.ConfigureDbContext = builder =>
