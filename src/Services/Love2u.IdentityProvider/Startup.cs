@@ -14,6 +14,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Love2u.IdentityProvider.Data.Models;
 using System.Reflection;
+using IdentityServer4;
+using Love2u.IdentityProvider.Services;
 
 namespace Love2u.IdentityProvider
 {
@@ -42,6 +44,7 @@ namespace Love2u.IdentityProvider
                 options.UseSqlServer(connectionString));
             services.AddDefaultIdentity<User>()
                 .AddEntityFrameworkStores<Love2uIdentityContext>();
+            services.AddScoped<IUserClaimsPrincipalFactory<User>, ClaimsPrincipalFactory>();
             services.AddIdentityServer()
                 .AddDeveloperSigningCredential()
                 .AddOperationalStore(options =>
@@ -54,12 +57,16 @@ namespace Love2u.IdentityProvider
                     options.ConfigureDbContext = builder =>
                         builder.UseSqlServer(connectionString, sql => sql.MigrationsAssembly(migrationsAssembly));
                 });
+
+            services.AddAuthentication();
+            services.AddMvc();
             services.AddRazorPages();
         }
         
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseRouting();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -74,16 +81,15 @@ namespace Love2u.IdentityProvider
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            app.UseAuthentication();
             app.UseCookiePolicy();
 
-            app.UseRouting();
-
-            app.UseAuthentication();
-            app.UseAuthorization();
+            
+            app.UseIdentityServer();
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllers();
                 endpoints.MapRazorPages();
             });
         }

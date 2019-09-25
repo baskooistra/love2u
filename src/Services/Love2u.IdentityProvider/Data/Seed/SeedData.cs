@@ -32,9 +32,14 @@ namespace Love2u.IdentityProvider.Data.Seed
             var clients = IdentityServerConfiguration.Clients;
             foreach (var client in clients)
             {
-                if (!configuration.Clients.Any(c => c.ClientId == client.ClientId))
+                var clientEntity = configuration.Clients.SingleOrDefaultAsync(c => c.ClientId == client.ClientId);
+                if (clientEntity == null)
                 {
                     configuration.Clients.Add(client.ToEntity());
+                }
+                else
+                {
+                    configuration.Clients.Update()
                 }
             }
 
