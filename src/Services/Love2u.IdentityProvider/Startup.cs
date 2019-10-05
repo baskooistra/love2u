@@ -16,6 +16,8 @@ using Love2u.IdentityProvider.Data.Models;
 using System.Reflection;
 using IdentityServer4;
 using Love2u.IdentityProvider.Services;
+using Microsoft.AspNetCore.Mvc;
+using IdentityServer4.Services;
 
 namespace Love2u.IdentityProvider
 {
@@ -59,8 +61,19 @@ namespace Love2u.IdentityProvider
                 });
 
             services.AddAuthentication();
-            services.AddMvc();
+            services.AddMvc()
+                .AddRazorPagesOptions(options => 
+                    options.Conventions.AddAreaFolderRouteModelConvention("Identity", "/Account", model =>
+                    {
+                        foreach (var selector in model.Selectors)
+                        {
+                            var attributeRouteModel = selector.AttributeRouteModel;
+                            attributeRouteModel.Order = -1;
+                            attributeRouteModel.Template = attributeRouteModel.Template.Remove(0, "Identity".Length);
+                        }
+                    })).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.AddRazorPages();
+            services.AddTransient<IProfileService, ProfileService>();
         }
         
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -81,7 +94,6 @@ namespace Love2u.IdentityProvider
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            app.UseAuthentication();
             app.UseCookiePolicy();
 
             
@@ -89,7 +101,6 @@ namespace Love2u.IdentityProvider
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
                 endpoints.MapRazorPages();
             });
         }

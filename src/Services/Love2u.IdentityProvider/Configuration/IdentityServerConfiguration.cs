@@ -14,13 +14,14 @@ namespace Love2u.IdentityProvider.Configuration
             new Client
             {
                 ClientId = "Postman",
-                AllowedGrantTypes = GrantTypes.HybridAndClientCredentials,
+                AllowedGrantTypes = GrantTypes.CodeAndClientCredentials,
                 ClientName = "Postman - developer client",
                 ClientSecrets = { new Secret("H!lde_1984".Sha256()) },
                 AllowedScopes = { StandardScopes.OpenId, StandardScopes.Profile, StandardScopes.Phone, StandardScopes.Email,
                     StandardScopes.Address, StandardScopes.OfflineAccess },
                 RedirectUris = new[] { "https://localhost:8000/signin-oidc" },
-                PostLogoutRedirectUris = new[] { "https://localhost:8000/signout-oidc" }
+                PostLogoutRedirectUris = new[] { "https://localhost:8000/signout-oidc" },
+                RequireConsent = false
             }
         };
 

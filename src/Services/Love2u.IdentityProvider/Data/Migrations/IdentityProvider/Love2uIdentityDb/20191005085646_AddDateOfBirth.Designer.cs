@@ -4,14 +4,16 @@ using Love2u.IdentityProvider.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Love2u.IdentityProvider.Data.Migrations.IdentityProvider.Love2uIdentityDb
 {
     [DbContext(typeof(Love2uIdentityContext))]
-    partial class Love2uIdentityContextModelSnapshot : ModelSnapshot
+    [Migration("20191005085646_AddDateOfBirth")]
+    partial class AddDateOfBirth
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

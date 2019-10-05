@@ -10,5 +10,6 @@ namespace Love2u.IdentityProvider.Data.Models
     {
         public string FirstName { get; set; }
         public string FamilyName { get; set; }
+        public DateTime DateBirth { get; set; }
     }
 }
