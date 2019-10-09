@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using Love2u.IdentityProvider.Data.Annotations;
 
 namespace Love2u.IdentityProvider.Areas.Identity.Pages.Account
 {
@@ -47,6 +48,21 @@ namespace Love2u.IdentityProvider.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required]
+            [Display(Name = "Username")]
+            [StringLength(256, ErrorMessage = "The {0} may not be more then {1} characters long.")]
+            public string UserName { get; set; }
+
+            [Required]
+            [Display(Name = "First name")]
+            [StringLength(50, ErrorMessage = "The {0} may not be more then {1} characters long.")]
+            public string FirstName { get; set; }
+
+            [Required]
+            [Display(Name = "Date of birth")]
+            [MinimumAge(18, ErrorMessage = "You must be at least {0} years old to use our services.")]
+            public DateTime DateOfBirth { get; set; }
+
+            [Required]
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
@@ -75,7 +91,7 @@ namespace Love2u.IdentityProvider.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new User { UserName = Input.Email, Email = Input.Email };
+                var user = new User { UserName = Input.UserName, FirstName = Input.FirstName, DateBirth = Input.DateOfBirth, Email = Input.Email };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {

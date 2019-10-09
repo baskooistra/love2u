@@ -25,7 +25,8 @@ namespace Love2u.IdentityProvider.Services
 
             ((ClaimsIdentity)principal.Identity).AddClaims(new[] 
             {
-                new Claim(JwtRegisteredClaimNames.Sub, user.Id)
+                new Claim(JwtRegisteredClaimNames.Sub, user.Id),
+                new Claim(ClaimTypes.NameIdentifier, user.Id)
             });
 
             return principal;

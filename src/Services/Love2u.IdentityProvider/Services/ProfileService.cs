@@ -29,27 +29,16 @@ namespace Love2u.IdentityProvider.Services
             context.LogProfileRequest(Logger);
             var user = await UserManager.GetUserAsync(context.Subject);
             var scopes = context.RequestedResources.IdentityResources.Select(resource => resource.Name);
-            IEnumerable<Claim> claims = new List<Claim>();
+            List<Claim> claims = new List<Claim>();
             foreach (Claim claim in context.Subject.Claims) 
             {
-                claims.Append(claim);
+                claims.Add(claim);
             }
-
-            if (scopes.Contains(StandardScopes.Profile))
-                AddProfileClaims(claims, user);
 
             if (scopes.Contains(StandardScopes.Email))
                 claims.Append(new Claim(ClaimTypes.Email, user.Email));
-
-            context.AddRequestedClaims(claims);
+            context.IssuedClaims.AddRange(claims);
             context.LogIssuedClaims(Logger);
-        }
-
-        private void AddProfileClaims(IEnumerable<Claim> claims, User user)
-        {
-
-            claims.Append(new Claim(ClaimTypes.GivenName, user.FirstName));
-            claims.Append(new Claim(ClaimTypes.Surname, user.FamilyName));
         }
 
         Task IProfileService.IsActiveAsync(IsActiveContext context)

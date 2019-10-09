@@ -18,6 +18,8 @@ using IdentityServer4;
 using Love2u.IdentityProvider.Services;
 using Microsoft.AspNetCore.Mvc;
 using IdentityServer4.Services;
+using System.Security.Claims;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace Love2u.IdentityProvider
 {
@@ -44,8 +46,10 @@ namespace Love2u.IdentityProvider
 
             services.AddDbContext<Love2uIdentityContext>(options =>
                 options.UseSqlServer(connectionString));
-            services.AddDefaultIdentity<User>()
-                .AddEntityFrameworkStores<Love2uIdentityContext>();
+            services.AddDefaultIdentity<User>(options => 
+            {
+                options.ClaimsIdentity.UserIdClaimType = JwtRegisteredClaimNames.Sub;
+            }).AddEntityFrameworkStores<Love2uIdentityContext>();
             services.AddScoped<IUserClaimsPrincipalFactory<User>, ClaimsPrincipalFactory>();
             services.AddIdentityServer()
                 .AddDeveloperSigningCredential()
