@@ -9,12 +9,12 @@ COPY ["src/Services/Love2u.IdentityProvider/Love2u.IdentityProvider.csproj", "sr
 RUN dotnet restore "src/Services/Love2u.IdentityProvider/Love2u.IdentityProvider.csproj"
 COPY . .
 WORKDIR "/src/src/Services/Love2u.IdentityProvider"
-RUN dotnet build "Love2u.IdentityProvider.csproj" -c Release -o /app/build
+RUN dotnet build "Love2u.IdentityProvider.csproj" -c Release -o /app
 
 FROM build AS publish
-RUN dotnet publish "Love2u.IdentityProvider.csproj" -c Release -o /app/publish
+RUN dotnet publish "Love2u.IdentityProvider.csproj" -c Release -o /app
 
 FROM base AS final
 WORKDIR /app
-COPY --from=publish /app/publish .
+COPY --from=publish /app .
 ENTRYPOINT ["dotnet", "Love2u.IdentityProvider.dll"]

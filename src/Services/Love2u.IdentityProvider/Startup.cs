@@ -20,6 +20,8 @@ using Microsoft.AspNetCore.Mvc;
 using IdentityServer4.Services;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.DataProtection;
+using StackExchange.Redis;
 
 namespace Love2u.IdentityProvider
 {
@@ -63,6 +65,13 @@ namespace Love2u.IdentityProvider
                     options.ConfigureDbContext = builder =>
                         builder.UseSqlServer(connectionString, sql => sql.MigrationsAssembly(migrationsAssembly));
                 });
+
+            var redis = ConnectionMultiplexer.Connect(Configuration.GetConnectionString("RedisConnection"));
+            services.AddDataProtection(opts =>
+            {
+                opts.ApplicationDiscriminator = "Love2u.IdentityProvider";
+            })
+            .PersistKeysToStackExchangeRedis(redis, "DataProtection-Keys");
 
             services.AddAuthentication();
             services.AddMvc()
