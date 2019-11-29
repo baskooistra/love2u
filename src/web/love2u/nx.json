@@ -1,0 +1,27 @@
+{
+  "npmScope": "love2u",
+  "implicitDependencies": {
+    "angular.json": "*",
+    "package.json": "*",
+    "tsconfig.json": "*",
+    "tslint.json": "*",
+    "nx.json": "*"
+  },
+  "projects": {
+    "web-e2e": {
+      "tags": []
+    },
+    "web": {
+      "tags": []
+    },
+    "mobile-e2e": {
+      "tags": []
+    },
+    "mobile": {
+      "tags": []
+    },
+    "authorization": {
+      "tags": []
+    }
+  }
+}

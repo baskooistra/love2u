@@ -11,9 +11,7 @@ services:
     image: ${DOCKER_REGISTRY-}love2uidentityprovider
     build:
       context: .
-      dockerfile: src/Services/Love2u.IdentityProvider/Dockerfile
-    ports:
-      - "5100:80"
+      dockerfile: src/Services/Love2u.IdentityProvider/Dockerfile    
     depends_on:
       - identitydb
       - redisdb
