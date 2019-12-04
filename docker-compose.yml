@@ -15,3 +15,10 @@ services:
     depends_on:
       - identitydb
       - redisdb
+  love2u.web:
+    image: ${DOCKER_REGISTRY-}love2uweb
+    build:
+      context: .
+      dockerfile: src/web/love2u/Dockerfile
+    depends_on:
+      - love2u.identityprovider

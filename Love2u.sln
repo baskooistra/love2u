@@ -17,6 +17,31 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Love2u.IdentityProvider", "
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{EA17D778-E90D-4E15-988C-16C08DDC0DDF}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "web", "web", "{376D3BC2-34BC-432A-B15E-FCAC7DC9964C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "love2u", "love2u", "{F63CEFC5-3144-4F34-96F3-0717A7212109}"
+EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "love2u", "src\web\love2u\", "{FB248C22-B999-4B77-93AC-3BBCAF2E6799}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_29432"
+		Debug.AspNetCompiler.PhysicalPath = "src\web\love2u\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_29432\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_29432"
+		Release.AspNetCompiler.PhysicalPath = "src\web\love2u\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_29432\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "29432"
+		SlnRelativePath = "src\web\love2u\"
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +76,18 @@ Global
 		{EA17D778-E90D-4E15-988C-16C08DDC0DDF}.Release|x64.Build.0 = Release|Any CPU
 		{EA17D778-E90D-4E15-988C-16C08DDC0DDF}.Release|x86.ActiveCfg = Release|Any CPU
 		{EA17D778-E90D-4E15-988C-16C08DDC0DDF}.Release|x86.Build.0 = Release|Any CPU
+		{FB248C22-B999-4B77-93AC-3BBCAF2E6799}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB248C22-B999-4B77-93AC-3BBCAF2E6799}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB248C22-B999-4B77-93AC-3BBCAF2E6799}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{FB248C22-B999-4B77-93AC-3BBCAF2E6799}.Debug|x64.Build.0 = Debug|Any CPU
+		{FB248C22-B999-4B77-93AC-3BBCAF2E6799}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FB248C22-B999-4B77-93AC-3BBCAF2E6799}.Debug|x86.Build.0 = Debug|Any CPU
+		{FB248C22-B999-4B77-93AC-3BBCAF2E6799}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB248C22-B999-4B77-93AC-3BBCAF2E6799}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{FB248C22-B999-4B77-93AC-3BBCAF2E6799}.Release|x64.ActiveCfg = Debug|Any CPU
+		{FB248C22-B999-4B77-93AC-3BBCAF2E6799}.Release|x64.Build.0 = Debug|Any CPU
+		{FB248C22-B999-4B77-93AC-3BBCAF2E6799}.Release|x86.ActiveCfg = Debug|Any CPU
+		{FB248C22-B999-4B77-93AC-3BBCAF2E6799}.Release|x86.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -58,6 +95,9 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{CBF0B2DD-5C3F-42EF-8BA9-9D518A588C1E} = {4A322DA0-433F-49F6-89FF-BB29518C04B9}
 		{8E90C4A9-C5D4-404F-B1C8-C2C11AF992A7} = {CBF0B2DD-5C3F-42EF-8BA9-9D518A588C1E}
+		{376D3BC2-34BC-432A-B15E-FCAC7DC9964C} = {4A322DA0-433F-49F6-89FF-BB29518C04B9}
+		{F63CEFC5-3144-4F34-96F3-0717A7212109} = {376D3BC2-34BC-432A-B15E-FCAC7DC9964C}
+		{FB248C22-B999-4B77-93AC-3BBCAF2E6799} = {F63CEFC5-3144-4F34-96F3-0717A7212109}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C2909369-5A02-457E-84F0-F4D532DD9E41}

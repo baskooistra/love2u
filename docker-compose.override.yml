@@ -13,3 +13,6 @@ services:
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
     ports:
       - "5100:80"
+  love2u.web:
+    ports:
+      - "5101:80"
