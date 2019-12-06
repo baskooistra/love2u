@@ -4,15 +4,14 @@ services:
   love2u.identityprovider:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=https://+:443;http://+:80
-      - ASPNETCORE_HTTPS_PORT=44390
+      - ASPNETCORE_URLS=http://0.0.0.0:80
       - ConnectionStrings__DefaultConnection=${LOVE2U_IDENTITY_SQLDB:-Server=sql.data;Database=Love2u.IdentityProvider;User Id=sa;Password=H!lde_1984}
       - ConnectionStrings__RedisConnection=${LOVE2U_IDENTITY_REDISDB:-redisdb}
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
     ports:
-      - "5100:80"
+      - "5101:80"
   love2u.web:
     ports:
-      - "5101:80"
+      - "5100:80"

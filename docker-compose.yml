@@ -18,7 +18,7 @@ services:
   love2u.web:
     image: ${DOCKER_REGISTRY-}love2uweb
     build:
-      context: .
-      dockerfile: src/web/love2u/Dockerfile
+      context: src/web/love2u
+      dockerfile: Dockerfile
     depends_on:
       - love2u.identityprovider
