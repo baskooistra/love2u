@@ -22,6 +22,9 @@
     },
     "authorization": {
       "tags": []
+    },
+    "material-ui": {
+      "tags": []
     }
   }
 }

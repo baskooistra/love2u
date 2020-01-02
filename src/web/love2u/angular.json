@@ -21,8 +21,14 @@
             "polyfills": "apps/web/src/polyfills.ts",
             "tsConfig": "apps/web/tsconfig.app.json",
             "aot": false,
-            "assets": ["apps/web/src/favicon.ico", "apps/web/src/assets"],
-            "styles": ["apps/web/src/styles.scss"],
+            "assets": [
+              "apps/web/src/favicon.ico",
+              "apps/web/src/assets"
+            ],
+            "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
+              "apps/web/src/styles.scss"
+            ],
             "scripts": []
           },
           "configurations": {
@@ -81,7 +87,10 @@
               "apps/web/tsconfig.app.json",
               "apps/web/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!apps/web/**"]
+            "exclude": [
+              "**/node_modules/**",
+              "!apps/web/**"
+            ]
           }
         },
         "test": {
@@ -115,8 +124,13 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": ["apps/web-e2e/tsconfig.e2e.json"],
-            "exclude": ["**/node_modules/**", "!apps/web-e2e/**"]
+            "tsConfig": [
+              "apps/web-e2e/tsconfig.e2e.json"
+            ],
+            "exclude": [
+              "**/node_modules/**",
+              "!apps/web-e2e/**"
+            ]
           }
         }
       }
@@ -141,8 +155,13 @@
             "polyfills": "apps/mobile/src/polyfills.ts",
             "tsConfig": "apps/mobile/tsconfig.app.json",
             "aot": false,
-            "assets": ["apps/mobile/src/favicon.ico", "apps/mobile/src/assets"],
-            "styles": ["apps/mobile/src/styles.scss"],
+            "assets": [
+              "apps/mobile/src/favicon.ico",
+              "apps/mobile/src/assets"
+            ],
+            "styles": [
+              "apps/mobile/src/styles.scss"
+            ],
             "scripts": []
           },
           "configurations": {
@@ -201,7 +220,10 @@
               "apps/mobile/tsconfig.app.json",
               "apps/mobile/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!apps/mobile/**"]
+            "exclude": [
+              "**/node_modules/**",
+              "!apps/mobile/**"
+            ]
           }
         },
         "test": {
@@ -235,8 +257,13 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": ["apps/mobile-e2e/tsconfig.e2e.json"],
-            "exclude": ["**/node_modules/**", "!apps/mobile-e2e/**"]
+            "tsConfig": [
+              "apps/mobile-e2e/tsconfig.e2e.json"
+            ],
+            "exclude": [
+              "**/node_modules/**",
+              "!apps/mobile-e2e/**"
+            ]
           }
         }
       }
@@ -254,7 +281,10 @@
               "libs/authorization/tsconfig.lib.json",
               "libs/authorization/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!libs/authorization/**"]
+            "exclude": [
+              "**/node_modules/**",
+              "!libs/authorization/**"
+            ]
           }
         },
         "test": {
@@ -263,6 +293,40 @@
             "jestConfig": "libs/authorization/jest.config.js",
             "tsConfig": "libs/authorization/tsconfig.spec.json",
             "setupFile": "libs/authorization/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
+        }
+      }
+    },
+    "material-ui": {
+      "projectType": "library",
+      "root": "libs/ui/material",
+      "sourceRoot": "libs/ui/material/src",
+      "prefix": "love2u",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/ui/material/tsconfig.lib.json",
+              "libs/ui/material/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**",
+              "!libs/ui/material/**"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/ui/material/jest.config.js",
+            "tsConfig": "libs/ui/material/tsconfig.spec.json",
+            "setupFile": "libs/ui/material/src/test-setup.ts"
           }
         }
       },

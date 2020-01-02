@@ -1,7 +1,7 @@
 import { environment } from '../environments/environment';
 
 export const ApplicationUrls: ApplicationUrlTypes = {
-    IDENTITY_PROVIDER: environment.identityProviderUrl        
+    IDENTITY_PROVIDER: environment.identityProviderUrl      
 }
 
 class ApplicationUrlTypes {

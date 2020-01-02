@@ -16,7 +16,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@love2u/authorization": ["libs/authorization/src/index.ts"]
+      "@love2u/authorization": ["libs/authorization/src/index.ts"],
+      "@love2u/ui/material": ["libs/ui/material/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
