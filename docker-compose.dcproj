@@ -6,7 +6,7 @@
     <ProjectGuid>ea17d778-e90d-4e15-988c-16c08ddc0ddf</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}</DockerServiceUrl>
-    <DockerServiceName>love2u.identityprovider</DockerServiceName>
+    <DockerServiceName>love2u.angular</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
     <None Include="docker-compose.override.yml">
