@@ -27,7 +27,7 @@ export class AppComponent {
         queryParams: {
           returnUrl: this.router.routerState.snapshot.url
         }
-      })
+      });
     }
   }
 }
