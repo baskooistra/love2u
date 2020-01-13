@@ -1,12 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Love2u.IdentityProvider.Data;
 using Microsoft.Extensions.Configuration;
@@ -14,25 +8,26 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Love2u.IdentityProvider.Data.Models;
 using System.Reflection;
-using IdentityServer4;
 using Love2u.IdentityProvider.Services;
 using Microsoft.AspNetCore.Mvc;
 using IdentityServer4.Services;
-using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.DataProtection;
 using StackExchange.Redis;
+using Love2u.IdentityProvider.Extensions;
 
 namespace Love2u.IdentityProvider
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
             Configuration = configuration;
+            Environment = environment;
         }
 
         public IConfiguration Configuration { get; }
+        public IWebHostEnvironment Environment { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -66,12 +61,15 @@ namespace Love2u.IdentityProvider
                         builder.UseSqlServer(connectionString, sql => sql.MigrationsAssembly(migrationsAssembly));
                 });
 
-            var redis = ConnectionMultiplexer.Connect(Configuration.GetConnectionString("RedisConnection"));
-            services.AddDataProtection(opts =>
+            if (Environment.IsDockerHosted()) 
             {
-                opts.ApplicationDiscriminator = "Love2u.IdentityProvider";
-            })
-            .PersistKeysToStackExchangeRedis(redis, "DataProtection-Keys");
+                var redis = ConnectionMultiplexer.Connect(Configuration.GetConnectionString("RedisConnection"));
+                services.AddDataProtection(opts =>
+                {
+                    opts.ApplicationDiscriminator = "Love2u.IdentityProvider";
+                })
+                .PersistKeysToStackExchangeRedis(redis, "DataProtection-Keys");
+            }
 
             services.AddAuthentication();
             services.AddMvc()
@@ -86,14 +84,25 @@ namespace Love2u.IdentityProvider
                         }
                     })).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.AddRazorPages();
+            services.AddControllers();
             services.AddTransient<IProfileService, ProfileService>();
+            services.AddCors(options =>
+            {
+                options.AddPolicy("Love2u.Angular", policyBuilder =>
+                {
+                    policyBuilder.WithOrigins(this.Configuration["ANGULAR_SPA_ORIGIN"])
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+                });
+            });
         }
         
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app)
         {
             app.UseRouting();
-            if (env.IsDevelopment())
+            app.UseCors("Love2u.Angular");
+            if (Environment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
@@ -115,6 +124,7 @@ namespace Love2u.IdentityProvider
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
+                endpoints.MapControllers();
             });
         }
     }

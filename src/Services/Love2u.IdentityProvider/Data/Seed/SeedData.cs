@@ -2,7 +2,9 @@
 using IdentityServer4.EntityFramework.Interfaces;
 using IdentityServer4.EntityFramework.Mappers;
 using Love2u.IdentityProvider.Configuration;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -16,7 +18,8 @@ namespace Love2u.IdentityProvider.Data.Seed
         internal static async Task EnsureSeedDataAsync(IServiceProvider serviceProvider)
         {
             await PerformMigrationsAsync(serviceProvider);
-            await SeedIdentityServerConfigurationAsync(serviceProvider.GetRequiredService<ConfigurationDbContext>());
+            await SeedIdentityServerConfigurationAsync(serviceProvider.GetRequiredService<ConfigurationDbContext>(),
+                serviceProvider.GetRequiredService<IConfiguration>());
         }
 
         private static async Task PerformMigrationsAsync(IServiceProvider serviceProvider)
@@ -26,16 +29,16 @@ namespace Love2u.IdentityProvider.Data.Seed
             await serviceProvider.GetRequiredService<PersistedGrantDbContext>().Database.MigrateAsync();
         }
 
-        private static async Task SeedIdentityServerConfigurationAsync(IConfigurationDbContext configuration)
+        private static async Task SeedIdentityServerConfigurationAsync(IConfigurationDbContext context, IConfiguration configuration)
         {
             // Seed OIDC clients from configuration
-            var clients = IdentityServerConfiguration.Clients;
+            var clients = IdentityServerConfiguration.Clients(configuration);
             foreach (var client in clients)
             {
-                var clientEntity = await configuration.Clients.SingleOrDefaultAsync(c => c.ClientId == client.ClientId);
+                var clientEntity = await context.Clients.SingleOrDefaultAsync(c => c.ClientId == client.ClientId);
                 if (clientEntity == null)
                 {
-                    configuration.Clients.Add(client.ToEntity());
+                    context.Clients.Add(client.ToEntity());
                 }
             }
 
@@ -43,13 +46,13 @@ namespace Love2u.IdentityProvider.Data.Seed
             var identityResources = IdentityServerConfiguration.IdentityResources;
             foreach (var identityResource in identityResources)
             {
-                if (!configuration.IdentityResources.Any(c => c.Name == identityResource.Name))
+                if (!context.IdentityResources.Any(c => c.Name == identityResource.Name))
                 {
-                    configuration.IdentityResources.Add(identityResource.ToEntity());
+                    context.IdentityResources.Add(identityResource.ToEntity());
                 }
             }
 
-            await configuration.SaveChangesAsync();
+            await context.SaveChangesAsync();
         }
     }
 }

@@ -14,7 +14,9 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443;http://+:80
       - ASPNETCORE_HTTPS_PORT=44381
-      - ConnectionStrings__DefaultConnection=${LOVE2U_IDENTITY_SQLDB:-Server=sql.data;Database=Love2u.IdentityProvider;User Id=sa;Password=H!lde_1984}
+      - ASPNETCORE_HOST=Docker
+      - ANGULAR_SPA_ORIGIN=https://localhost:44380
+      - ConnectionStrings__DefaultConnection=${LOVE2U_IDENTITY_SQLDB:-Server=identitydb;Database=Love2u.IdentityProvider;User Id=sa;Password=H!lde_1984}
       - ConnectionStrings__RedisConnection=${LOVE2U_IDENTITY_REDISDB:-redisdb}
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro

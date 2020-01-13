@@ -3,8 +3,8 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "https://localhost:44380/",
-      "sslPort": 44380
+      "applicationUrl": "https://localhost:44381/",
+      "sslPort": 44381
     }
   },
   "profiles": {
@@ -12,14 +12,16 @@
       "commandName": "IISExpress",
       "launchBrowser": true,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_HOST": "IIS"
       }
     },
     "Love2u.IdentityProvider": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_HOST": "Project"
       },
       "applicationUrl": "https://localhost:5001;http://localhost:5000"
     },
@@ -29,7 +31,8 @@
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
       "environmentVariables": {
         "ASPNETCORE_URLS": "https://+:443;http://+:80",
-        "ASPNETCORE_HTTPS_PORT": "44381"
+        "ASPNETCORE_HTTPS_PORT": "44381",
+        "ASPNETCORE_HOST": "Docker"
       },
       "httpPort": 10671,
       "useSSL": true,
