@@ -6,6 +6,8 @@ import { AppComponent } from './app.component';
 import { RouterModule, Routes } from '@angular/router';
 import { MaterialModule } from '@love2u/ui/material';
 import { environment } from '../environments/environment';
+import { LayoutComponent } from './layout/layout.component';
+import { HomeComponent } from './home/home.component';
 
 const authSettings: AuthorizationConfiguration = {
   applicationName: environment.name, 
@@ -14,12 +16,14 @@ const authSettings: AuthorizationConfiguration = {
 };
 
 const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: 'home', },
-  { path: 'home', component: AppComponent }
+  { path: '', component: LayoutComponent, children: [
+    { path: '', pathMatch: 'full', redirectTo: 'home', },
+    { path: 'home', component: HomeComponent }
+  ]}
 ];
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, HomeComponent, LayoutComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
