@@ -5,9 +5,9 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443;http://+:80
-      - ASPNETCORE_HTTPS_PORT=44381
+      - ASPNETCORE_HTTPS_PORT=44351
       - ASPNETCORE_HOST=Docker
-      - ANGULAR_SPA_ORIGIN=https://localhost:44380
+      - BLAZOR_ORIGIN=https://localhost:44350
       - ConnectionStrings__DefaultConnection=${LOVE2U_IDENTITY_SQLDB:-Server=identitydb;Database=Love2u.IdentityProvider;User Id=sa;Password=H!lde_1984}
       - ConnectionStrings__RedisConnection=${LOVE2U_IDENTITY_REDISDB:-redisdb}
     volumes:
@@ -15,4 +15,16 @@ services:
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
     ports:
       - "5101:80"
-      - "44381:443"
+      - "44351:443"
+  love2u.dating.web:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_HTTPS_PORT=44350
+    ports:
+      - "5100:80"
+      - "44350:443"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+      
