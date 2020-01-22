@@ -1,6 +1,14 @@
 version: '3.4'
 
 services:
+  love2u.angular:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_HTTPS_PORT=44380
+    ports:
+      - "5100:80"
+      - "44380:443"
   love2u.identityprovider:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
