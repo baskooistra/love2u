@@ -1,0 +1,11 @@
+<mat-toolbar class="navbar" role="heading" color="primary">
+    <span>Love2u</span>
+    <span class="spacer"></span>
+    <span>
+        <button mat-icon-button>
+            <mat-icon *ngIf="!this.loggedIn" aria-label="login" (click)="this.loggedIn = !this.loggedIn">person</mat-icon>
+            <mat-icon *ngIf="this.loggedIn" aria-label="logout" (click)="this.loggedIn = !this.loggedIn">person_outline</mat-icon>
+        </button>
+    </span>
+</mat-toolbar>
+<router-outlet></router-outlet>
