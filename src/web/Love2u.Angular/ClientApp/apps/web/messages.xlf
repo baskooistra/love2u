@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="BannerSubtitle" datatype="html">
+        <source>Where love is truly free.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/home/home.component.html</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+        <note priority="1" from="description">Subtitle for home banner</note>
+        <note priority="1" from="meaning">banner subtitle</note>
+      </trans-unit>
+      <trans-unit id="GetStartedButton" datatype="html">
+        <source>Get started</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/home/home.component.html</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+        <note priority="1" from="description">get started button text in home banner</note>
+        <note priority="1" from="meaning">start button</note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

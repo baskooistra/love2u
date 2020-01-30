@@ -1,0 +1,112 @@
+@import '~@angular/material/theming';
+@include mat-core();
+
+/* ======== Custom Love2u color palettes ========== */
+
+$love2u-primary-palette: (
+    50 : #fbe1e0,
+    100 : #f5b3b3,
+    200 : #ef8080,
+    300 : #e84d4d,
+    400 : #e32726,
+    500 : #de0100,
+    600 : #da0100,
+    700 : #d50100,
+    800 : #d10100,
+    900 : #c80000,
+    A100 : #fff1f1,
+    A200 : #ffbebe,
+    A400 : #ff8b8b,
+    A700 : #ff7171,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #ffffff,
+        400 : #ffffff,
+        500 : #ffffff,
+        600 : #ffffff,
+        700 : #ffffff,
+        800 : #ffffff,
+        900 : #ffffff,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #000000,
+        A700 : #000000,
+    )
+);
+
+$love2u-accent-palette: (
+    50 : #e2effa,
+    100 : #b6d8f2,
+    200 : #85beea,
+    300 : #54a4e1,
+    400 : #3091da,
+    500 : #0b7dd4,
+    600 : #0a75cf,
+    700 : #086ac9,
+    800 : #0660c3,
+    900 : #034db9,
+    A100 : #e2ecff,
+    A200 : #afcbff,
+    A400 : #7ca9ff,
+    A700 : #6399ff,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #000000,
+        400 : #ffffff,
+        500 : #ffffff,
+        600 : #ffffff,
+        700 : #ffffff,
+        800 : #ffffff,
+        900 : #ffffff,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #000000,
+        A700 : #000000,
+    )
+);
+
+$love2u-warning-palette: (
+    50 : #ffe9ec,
+    100 : #ffc8d1,
+    200 : #ffa4b2,
+    300 : #ff8093,
+    400 : #ff647b,
+    500 : #ff4964,
+    600 : #ff425c,
+    700 : #ff3952,
+    800 : #ff3148,
+    900 : #ff2136,
+    A100 : #ffffff,
+    A200 : #ffffff,
+    A400 : #ffd0d4,
+    A700 : #ffb7bd,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #000000,
+        400 : #000000,
+        500 : #000000,
+        600 : #ffffff,
+        700 : #ffffff,
+        800 : #ffffff,
+        900 : #ffffff,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #000000,
+        A700 : #000000,
+    )
+);
+
+/* ======== Angular material custom themes ======== */
+$love2u-primary: mat-palette($love2u-primary-palette, 500, 200, 900);
+$love2u-accent: mat-palette($love2u-accent-palette, 500, 300, 900);
+$love2u-warn: mat-palette($love2u-warning-palette, 800, 300, 900);
+
+$love2u-theme: mat-light-theme($love2u-primary, $love2u-accent, $love2u-warn);
+
+@include angular-material-theme($love2u-theme);

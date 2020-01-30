@@ -1,11 +1,26 @@
-.spacer {
-    /* This fills the remaining space, by using flexbox. 
-       Every toolbar row uses a flexbox row layout. */
-    flex: 1 1 auto;
-  }
+.sidenav-container {
+  height: 100%;
+}
 
-  .navbar {
-     position: fixed;
-     top: 0;
-     background-color: transparent;
-  }
+.sidenav {
+  width: 200px;
+}
+
+.mat-toolbar.mat-primary {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  box-shadow: 0px 0px 20px black;
+}
+
+mat-sidenav {
+  box-shadow: 0px 0px 25px black;
+}
+
+.mat-toolbar.footer {
+  height: 80px;
+}
+
+mat-sidenav {
+  border-right: 1px solid darkred;
+}
