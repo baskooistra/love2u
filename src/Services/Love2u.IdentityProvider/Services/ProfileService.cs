@@ -34,7 +34,7 @@ namespace Love2u.IdentityProvider.Services
             {
                 claims.Add(claim);
             }
-
+            
             if (scopes.Contains(StandardScopes.Email))
                 claims.Append(new Claim(ClaimTypes.Email, user.Email));
             context.IssuedClaims.AddRange(claims);

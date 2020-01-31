@@ -3,8 +3,8 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:12681",
-      "sslPort": 44384
+      "applicationUrl": "http://localhost:4701",
+      "sslPort": 44383
     }
   },
   "profiles": {
@@ -15,7 +15,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "Love2u.Dating.Web": {
+    "Love2u.APIGateway.Web": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {

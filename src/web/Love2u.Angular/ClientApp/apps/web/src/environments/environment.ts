@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   name: "Love2u",
-  identityProviderUrl: "https://localhost:44381"
+  identityProviderUrl: "https://localhost:44351"
 };
 
 /*

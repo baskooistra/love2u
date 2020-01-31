@@ -50,7 +50,6 @@ export class LoginComponent implements OnInit {
   }
 
   private async login(returnUrl: string): Promise<void> {
-    debugger;
     const state: NavigationState = { returnUrl };
     const result: AuthenticationResult = await this.authorizeService.signIn(state);
     switch (result.status) {

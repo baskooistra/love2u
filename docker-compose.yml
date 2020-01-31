@@ -22,11 +22,3 @@ services:
       dockerfile: src/web/Love2u.Angular/Dockerfile
     depends_on:
       - love2u.identityprovider
-      - redisdb
-  love2u.dating.web:
-    image: ${DOCKER_REGISTRY-}love2udatingweb
-    build:
-      context: .
-      dockerfile: src/web/Consumers/Love2u.Dating.Web/Dockerfile
-    depends_on:
-      - love2u.identityprovider

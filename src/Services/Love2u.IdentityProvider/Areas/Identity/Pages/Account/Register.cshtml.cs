@@ -58,6 +58,11 @@ namespace Love2u.IdentityProvider.Areas.Identity.Pages.Account
             public string FirstName { get; set; }
 
             [Required]
+            [Display(Name = "Last name")]
+            [StringLength(100, ErrorMessage = "The {0} may not be more then {1} characters long.")]
+            public string LastName { get; set; }
+
+            [Required]
             [Display(Name = "Date of birth")]
             [MinimumAge(18, ErrorMessage = "You must be at least {0} years old to use our services.")]
             public DateTime DateOfBirth { get; set; }
@@ -91,7 +96,7 @@ namespace Love2u.IdentityProvider.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new User { UserName = Input.UserName, FirstName = Input.FirstName, DateBirth = Input.DateOfBirth, Email = Input.Email };
+                var user = new User { UserName = Input.UserName, FirstName = Input.FirstName, FamilyName = Input.LastName, DateBirth = Input.DateOfBirth, Email = Input.Email };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {

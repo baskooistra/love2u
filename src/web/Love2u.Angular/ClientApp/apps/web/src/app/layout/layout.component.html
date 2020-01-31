@@ -1,8 +1,8 @@
 <mat-sidenav-container class="sidenav-container">
   <mat-sidenav #drawer class="sidenav" fixedInViewport
-      [attr.role]="'dialog'"
-      [mode]="(isHandset$ | async) ? 'over' : 'side'"
-      [opened]="false">
+               [attr.role]="'dialog'"
+               [mode]="(isHandset$ | async) ? 'over' : 'side'"
+               [opened]="false">
     <mat-toolbar color="primary">Menu</mat-toolbar>
     <mat-nav-list>
       <a mat-list-item href="#">Link 1</a>
@@ -13,21 +13,27 @@
   <mat-sidenav-content class="containerX">
     <mat-toolbar color="primary" class="container" fxLayout="row" fxLayoutAlign="space-between center">
       <div fxLayout="row" fxLayoutAlign="space-evenly center">
-        <button
-          type="button"
-          aria-label="Toggle sidenav"
-          mat-icon-button
-          (click)="drawer.toggle()">
+        <button type="button"
+                aria-label="Toggle sidenav"
+                mat-icon-button
+                (click)="drawer.toggle()">
           <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
         </button>
-        <span>Love2u</span>  
+        <span>Love2u</span>
       </div>
-      <button mat-icon-button>
-        <mat-icon *ngIf="!this.loggedIn" aria-label="login" (click)="this.loggedIn = !this.loggedIn">person</mat-icon>
-        <mat-icon *ngIf="this.loggedIn" aria-label="logout" (click)="this.loggedIn = !this.loggedIn">person_outline</mat-icon>
-      </button>
+      <div fxLayout="row" fxLayoutAlign="space-evenly center">
+        <ng-container *ngTemplateOutlet="loggedInUserTemplate; context: {user: loggedInUser$ | async }"></ng-container>
+        <ng-template #loggedInUserTemplate let-user="user">
+          <span *ngIf="user !== null">Welcome {{ user.firstName }} {{ user.lastName }}</span>
+          <button mat-icon-button *ngIf="user !== null" (click)="handleLogout()">
+            <mat-icon aria-label="logout">person_outline</mat-icon>
+          </button>
+          <button mat-icon-button *ngIf="user === null" (click)="handleLogin()">
+            <mat-icon aria-label="login">person</mat-icon>
+          </button>
+        </ng-template>
+      </div>
     </mat-toolbar>
-    <!-- Add Content Here -->
     <router-outlet></router-outlet>
     <mat-toolbar color="primary" class="footer"></mat-toolbar>
   </mat-sidenav-content>

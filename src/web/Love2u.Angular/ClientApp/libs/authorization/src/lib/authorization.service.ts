@@ -44,6 +44,9 @@ export class AuthorizationService {
   private popUpDisabled = true;
   private userManager: UserManager;
   private userSubject: BehaviorSubject<Love2uUser | null> = new BehaviorSubject(null);
+  public get user(): Observable<Love2uUser | null> {
+    return this.userSubject.asObservable();
+  }
 
   constructor(private configuration: AuthorizationConfiguration) {
     Log.logger = console;
@@ -86,7 +89,11 @@ export class AuthorizationService {
     let user: User = null;
     try {
       user = await this.userManager.signinSilent(this.createArguments());
-      this.userSubject.next(user.profile);
+      if (user) {
+        const profile = user.profile;
+        const love2uUser: Love2uUser = { id: profile.sub, firstName: profile.given_name, lastName: profile.family_name };
+        this.userSubject.next(love2uUser);
+      }
       return this.success(state);
     } catch (silentError) {
       // User might not be authenticated, fallback to popup authentication
@@ -97,7 +104,11 @@ export class AuthorizationService {
           throw new Error('Popup disabled. Change \'authorize.service.ts:AuthorizeService.popupDisabled\' to false to enable it.');
         }
         user = await this.userManager.signinPopup(this.createArguments());
-        this.userSubject.next(user.profile);
+        if (user) {
+          const profile = user.profile;
+          const love2uUser: Love2uUser = { id: profile.sub, firstName: profile.given_name, lastName: profile.family_name };
+          this.userSubject.next(love2uUser);
+        }
         return this.success(state);
       } catch (popupError) {
         if (popupError.message === 'Popup window closed') {
@@ -123,7 +134,11 @@ export class AuthorizationService {
     try {
       await this.ensureUserManagerInitialized();
       const user = await this.userManager.signinCallback(url);
-      this.userSubject.next(user && user.profile);
+      if (user) {
+        const profile = user.profile;
+        const love2uUser: Love2uUser = { id: profile.sub, firstName: profile.given_name, lastName: profile.family_name };
+        this.userSubject.next(love2uUser);
+      }
       return this.success(user && user.state);
     } catch (error) {
       console.log('There was an error signing in: ', error);
