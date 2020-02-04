@@ -24,8 +24,29 @@ services:
     ports:
       - "5101:80"
       - "44351:443"
+  love2u.apigateway.web:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_HTTPS_PORT=44352
+      - ANGULAR_SPA_ORIGIN=https://localhost:44350
+      - IDENTITY_PROVIDER_URL=love2u.identityprovider
+    ports:
+      - "5102:80"
+      - "44352:443"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+  love2u.profileapi:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - IDENTITY_PROVIDER_URL=https://localhost:44351
+    ports:
+      - "5103:80"
 networks:
   default:
     external:
       name: love2u
       
+

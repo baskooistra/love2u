@@ -5,7 +5,8 @@
 export const environment = {
   production: false,
   name: "Love2u",
-  identityProviderUrl: "https://localhost:44351"
+  identityProviderUrl: "https://localhost:44351",
+  apiUrl: "https://localhost:44352"
 };
 
 /*

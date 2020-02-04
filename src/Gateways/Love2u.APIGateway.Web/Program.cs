@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 using Serilog;
@@ -46,7 +49,7 @@ namespace Love2u.APIGateway.Web
                 Log.Fatal(exc, "Host terminated unexpectedly");
                 return 1;
             }
-            finally 
+            finally
             {
                 Log.CloseAndFlush();
             }
@@ -62,6 +65,16 @@ namespace Love2u.APIGateway.Web
                         .UseConfiguration(Configuration)
                         .ConfigureServices(services =>
                         {
+                            AddAuthenticationMiddleware(services);
+                            services.AddCors(options =>
+                            {
+                                options.AddPolicy("Love2u.Angular", policyBuilder =>
+                                {
+                                    policyBuilder.WithOrigins(Configuration["ANGULAR_SPA_ORIGIN"])
+                                        .AllowAnyMethod()
+                                        .AllowAnyHeader();
+                                });
+                            });
                             services.AddOcelot();
                         })
                         .ConfigureLogging((hostingContext, logging) =>
@@ -72,9 +85,27 @@ namespace Love2u.APIGateway.Web
                         .Configure(app =>
                         {
                             app.UseSerilogRequestLogging();
+                            app.UseCors("Love2u.Angular");
                             app.UseOcelot();
                         });
                 })
             .UseSerilog();
+        
+        private static void AddAuthenticationMiddleware(IServiceCollection services)
+        {
+            string identityProviderUrl = Configuration["IDENTITY_PROVIDER_URL"];
+            string authenticationProviderKey = "Love2uIdentityKey";
+
+            services.AddAuthentication()
+                .AddJwtBearer(authenticationProviderKey, options =>
+                {
+                    options.Authority = identityProviderUrl;
+                    options.RequireHttpsMetadata = false;
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidAudiences = new[] { "profile" }
+                    };
+                });
+        }
     }
 }

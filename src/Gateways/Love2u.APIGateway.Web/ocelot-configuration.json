@@ -1,19 +1,23 @@
 {
   "ReRoutes": [
     {
-      "DownstreamPathTemplate": "/todos/{id}",
-      "DownstreamScheme": "https",
+      "DownstreamPathTemplate": "/user/profile/{everything}",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "jsonplaceholder.typicode.com",
-          "Port": 443
+          "Host": "love2u.profileapi",
+          "Port": 80
         }
       ],
-      "UpstreamPathTemplate": "/todos/{id}",
-      "UpstreamHttpMethod": [ "Get" ]
+      "UpstreamPathTemplate": "/api/user/profile/{everything}",
+      "UpstreamHttpMethod": [ "POST", "PUT", "GET" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Love2uIdentityKey",
+        "AllowedScopes": []
+      }
     }
   ],
   "GlobalConfiguration": {
-    "BaseUrl": "https://localhost:5000"
+    "BaseUrl": "https://localhost:44352"
   }
 }

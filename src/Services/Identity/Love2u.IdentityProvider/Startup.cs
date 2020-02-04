@@ -15,6 +15,7 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.DataProtection;
 using StackExchange.Redis;
 using Love2u.IdentityProvider.Extensions;
+using Microsoft.IdentityModel.Logging;
 
 namespace Love2u.IdentityProvider
 {
@@ -90,11 +91,16 @@ namespace Love2u.IdentityProvider
             {
                 options.AddPolicy("Love2u.Angular", policyBuilder =>
                 {
-                    policyBuilder.WithOrigins(this.Configuration["ANGULAR_SPA_ORIGIN"])
+                    policyBuilder.WithOrigins(Configuration["ANGULAR_SPA_ORIGIN"])
                         .AllowAnyMethod()
                         .AllowAnyHeader();
                 });
             });
+
+            if (Environment.IsDevelopment()) 
+            {
+                IdentityModelEventSource.ShowPII = true;
+            }
         }
         
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

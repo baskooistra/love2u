@@ -11,7 +11,7 @@ services:
     image: ${DOCKER_REGISTRY-}love2uidentityprovider
     build:
       context: .
-      dockerfile: src/Services/Love2u.IdentityProvider/Dockerfile    
+      dockerfile: src/Services/Identity/Love2u.IdentityProvider/Dockerfile    
     depends_on:
       - identitydb
       - redisdb
@@ -22,3 +22,14 @@ services:
       dockerfile: src/web/Love2u.Angular/Dockerfile
     depends_on:
       - love2u.identityprovider
+  love2u.apigateway.web:
+    image: ${DOCKER_REGISTRY-}love2uapigatewayweb
+    build:
+      context: .
+      dockerfile: src/Gateways/Love2u.APIGateway.Web/Dockerfile
+  love2u.profileapi:
+    image: ${DOCKER_REGISTRY-}love2uprofileapi
+    build:
+      context: .
+      dockerfile: src/Services/Profile/Love2u.ProfileAPI/Dockerfile
+

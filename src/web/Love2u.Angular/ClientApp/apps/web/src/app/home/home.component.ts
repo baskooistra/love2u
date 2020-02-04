@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { AuthorizationService, AuthorizationPaths } from '@love2u/authorization';
 import { Router, ActivatedRoute } from '@angular/router';
-import { tap, take } from 'rxjs/operators';
+import { tap, take, mergeMap } from 'rxjs/operators';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'love2u-home',
@@ -11,7 +12,7 @@ import { tap, take } from 'rxjs/operators';
 export class HomeComponent {
   title = 'Love2u';
 
-  constructor(private authorizationService: AuthorizationService, private router: Router, private activatedRoute: ActivatedRoute) {
+  constructor(private authorizationService: AuthorizationService, private router: Router, private activatedRoute: ActivatedRoute, private http: HttpClient) {
 
   }
 
@@ -29,5 +30,17 @@ export class HomeComponent {
         }
       });
     }
+  }
+
+  handleGetStartedClick() {
+    this.authorizationService.getAccessToken().pipe(
+      mergeMap((token: string) => {
+        const headers = new HttpHeaders({
+          'Authorization': 'Bearer ' + token
+        });
+        return this.http.get("https://localhost:44352/api/user/profile/userprofile", { headers: headers });
+      })).subscribe(result => {
+        console.log(result);
+    });
   }
 }
