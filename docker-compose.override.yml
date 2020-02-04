@@ -24,4 +24,8 @@ services:
     ports:
       - "5101:80"
       - "44351:443"
+networks:
+  default:
+    external:
+      name: love2u
       
