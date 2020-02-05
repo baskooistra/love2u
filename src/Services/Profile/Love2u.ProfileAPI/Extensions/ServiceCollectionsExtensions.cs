@@ -23,7 +23,7 @@ namespace Love2u.ProfileAPI.Extensions
             {
                 options.Authority = identityUrl;
                 options.RequireHttpsMetadata = false;
-                options.Audience = "profile";
+                options.Audience = "profile.api";
             });
         }
     }

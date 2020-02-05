@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
@@ -75,6 +76,7 @@ namespace Love2u.APIGateway.Web
                                         .AllowAnyHeader();
                                 });
                             });
+                            
                             services.AddOcelot();
                         })
                         .ConfigureLogging((hostingContext, logging) =>
@@ -86,7 +88,8 @@ namespace Love2u.APIGateway.Web
                         {
                             app.UseSerilogRequestLogging();
                             app.UseCors("Love2u.Angular");
-                            app.UseOcelot();
+                            app.UseAuthentication();
+                            app.UseOcelot().Wait();
                         });
                 })
             .UseSerilog();
@@ -96,6 +99,11 @@ namespace Love2u.APIGateway.Web
             string identityProviderUrl = Configuration["IDENTITY_PROVIDER_URL"];
             string authenticationProviderKey = "Love2uIdentityKey";
 
+            if (Configuration["ASPNETCORE_ENVIRONMENT"] == "Development") 
+            {
+                IdentityModelEventSource.ShowPII = true;
+            }
+
             services.AddAuthentication()
                 .AddJwtBearer(authenticationProviderKey, options =>
                 {
@@ -103,7 +111,8 @@ namespace Love2u.APIGateway.Web
                     options.RequireHttpsMetadata = false;
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
-                        ValidAudiences = new[] { "profile" }
+                        ValidAudiences = new[] { "profile.api" },
+                        ValidIssuers = new[] { Configuration["IDENTITY_PROVIDER_URL"], Configuration["IDENTITY_PROVIDER_EXTERNAL"] }
                     };
                 });
         }

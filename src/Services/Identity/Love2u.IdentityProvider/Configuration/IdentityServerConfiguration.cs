@@ -30,7 +30,7 @@ namespace Love2u.IdentityProvider.Configuration
                 AllowedGrantTypes = GrantTypes.Code,
                 ClientName = "Love2u - Angular frontend",
                 AllowedScopes = { StandardScopes.OpenId, StandardScopes.Profile, StandardScopes.Phone, StandardScopes.Email,
-                    StandardScopes.Address, StandardScopes.OfflineAccess },
+                    StandardScopes.Address, StandardScopes.OfflineAccess, "profile.api" },
                 RedirectUris = new[] { $"{configuration["ANGULAR_SPA_ORIGIN"]}/authentication/login-callback" },
                 PostLogoutRedirectUris = new[] { $"{configuration["ANGULAR_SPA_ORIGIN"]}/authentication/logout-callback" },
                 RequireConsent = false,
@@ -51,6 +51,11 @@ namespace Love2u.IdentityProvider.Configuration
             new IdentityResources.Phone(),
             new IdentityResources.Email(),
             new IdentityResources.Address()
+        };
+
+        internal static IEnumerable<ApiResource> ApiResources => new ApiResource[]
+        {
+            new ApiResource("profile.api", "User profiles API")
         };
     }
 }

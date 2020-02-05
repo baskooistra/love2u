@@ -120,13 +120,10 @@ namespace Love2u.IdentityProvider
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
-
-            
             app.UseIdentityServer();
-
+            app.UseHttpsRedirection();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();

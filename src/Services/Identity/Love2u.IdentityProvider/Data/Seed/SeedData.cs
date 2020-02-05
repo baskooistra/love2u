@@ -52,6 +52,16 @@ namespace Love2u.IdentityProvider.Data.Seed
                 }
             }
 
+            // Seed API resource scopes from configuration
+            var apiResources = IdentityServerConfiguration.ApiResources;
+            foreach (var apiResource in apiResources)
+            {
+                if (!context.ApiResources.Any(c => c.Name == apiResource.Name))
+                {
+                    context.ApiResources.Add(apiResource.ToEntity());
+                }
+            }
+
             await context.SaveChangesAsync();
         }
     }

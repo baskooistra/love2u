@@ -25,8 +25,8 @@ namespace Love2u.ProfileAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAuthenticationMiddleware(Configuration["IDENTITY_PROVIDER_URL"]);
             services.AddControllers();
+            services.AddAuthenticationMiddleware(Configuration["IDENTITY_PROVIDER_URL"]);          
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -37,6 +37,8 @@ namespace Love2u.ProfileAPI
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseAuthentication();
+            
             app.UseRouting();
 
             app.UseAuthorization();
