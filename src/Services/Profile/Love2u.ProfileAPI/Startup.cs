@@ -37,12 +37,9 @@ namespace Love2u.ProfileAPI
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseAuthentication();
-            
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -77,7 +78,7 @@ namespace Love2u.APIGateway.Web
                                 });
                             });
                             
-                            services.AddOcelot();
+                            services.AddOcelot(Configuration);
                         })
                         .ConfigureLogging((hostingContext, logging) =>
                         {

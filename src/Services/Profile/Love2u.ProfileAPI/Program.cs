@@ -6,21 +6,48 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Serilog;
+using Serilog.Events;
 
 namespace Love2u.ProfileAPI
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static int Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            Log.Logger = new LoggerConfiguration()
+                .Enrich.FromLogContext()
+                .WriteTo.Debug(LogEventLevel.Debug)
+                .WriteTo.Console(restrictedToMinimumLevel: LogEventLevel.Information, outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj} {Properties:j}{NewLine}{Exception}")
+                .CreateLogger();
+
+            try
+            {
+                Log.Information("Starting profile API...");
+                CreateHostBuilder(args).Build().Run();
+                return 0;
+            }
+            catch (Exception exc)
+            {
+                Log.Fatal(exc, "Error starting profile API");
+                return 1;
+            }
+            finally 
+            {
+                Log.CloseAndFlush();
+            }
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>();
-                });
+                    webBuilder
+                        .ConfigureLogging((hsotingContext, logging) =>
+                        {
+                            logging.AddSerilog(dispose: true);
+                        })
+                        .UseStartup<Startup>();
+                }).UseSerilog();
     }
 }

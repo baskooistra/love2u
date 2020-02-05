@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -24,6 +25,10 @@ namespace Love2u.ProfileAPI.Extensions
                 options.Authority = identityUrl;
                 options.RequireHttpsMetadata = false;
                 options.Audience = "profile.api";
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = false
+                };
             });
         }
     }
