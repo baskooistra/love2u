@@ -1,19 +1,25 @@
 version: '3.4'
 services:
-  identitydb:
+  love2u_sql:
     image: mcr.microsoft.com/mssql/server:2019-latest
     environment:
         SA_PASSWORD: "H!lde_1984"
         ACCEPT_EULA: "Y"
   redisdb:
     image: redis:alpine
+  love2u_mongo:
+    image: mongo:latest
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: love2u_admin
+      MONGO_INITDB_ROOT_PASSWORD: H!lde_1984
   love2u.identityprovider:
     image: ${DOCKER_REGISTRY-}love2uidentityprovider
     build:
       context: .
       dockerfile: src/Services/Identity/Love2u.IdentityProvider/Dockerfile    
     depends_on:
-      - identitydb
+      - love2u_sql
       - redisdb
   love2u.angular:
     image: ${DOCKER_REGISTRY-}love2uweb
@@ -32,4 +38,6 @@ services:
     build:
       context: .
       dockerfile: src/Services/Profile/Love2u.ProfileAPI/Dockerfile
+    depends_on:
+      - love2u_mongo
 
