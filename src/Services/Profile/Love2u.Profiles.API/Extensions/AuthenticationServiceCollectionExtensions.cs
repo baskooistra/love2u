@@ -7,11 +7,11 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Love2u.ProfileAPI.Extensions
+namespace Love2u.Profiles.API.Extensions
 {
-    internal static class ServiceCollectionsExtensions
+    internal static class AuthenticationServiceCollectionExtensions
     {
-        internal static void AddAuthenticationMiddleware(this IServiceCollection services, string identityUrl) 
+        internal static void AddAuthenticationMiddleware(this IServiceCollection services, string identityUrl)
         {
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
@@ -24,7 +24,7 @@ namespace Love2u.ProfileAPI.Extensions
             {
                 options.Authority = identityUrl;
                 options.RequireHttpsMetadata = false;
-                options.Audience = "profile.api";
+                options.Audience = "profiles.api";
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = false

@@ -112,7 +112,7 @@ namespace Love2u.APIGateway.Web
                     options.RequireHttpsMetadata = false;
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
-                        ValidAudiences = new[] { "profile.api" },
+                        ValidAudiences = new[] { "profiles.api" },
                         ValidIssuers = new[] { Configuration["IDENTITY_PROVIDER_URL"], Configuration["IDENTITY_PROVIDER_EXTERNAL"] }
                     };
                 });

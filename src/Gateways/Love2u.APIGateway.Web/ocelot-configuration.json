@@ -5,7 +5,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "love2u.profileapi",
+          "Host": "love2u.profiles.api",
           "Port": 80
         }
       ],

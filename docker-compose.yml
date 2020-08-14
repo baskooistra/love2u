@@ -33,11 +33,11 @@ services:
     build:
       context: .
       dockerfile: src/Gateways/Love2u.APIGateway.Web/Dockerfile
-  love2u.profileapi:
-    image: ${DOCKER_REGISTRY-}love2uprofileapi
+  love2u.profiles.api:
+    image: ${DOCKER_REGISTRY-}love2uprofilesapi
     build:
       context: .
-      dockerfile: src/Services/Profile/Love2u.ProfileAPI/Dockerfile
+      dockerfile: src/Services/Profile/Love2u.Profiles.API/Dockerfile
     depends_on:
       - love2u_mongo
 

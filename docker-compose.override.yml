@@ -38,7 +38,7 @@ services:
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
-  love2u.profileapi:
+  love2u.profiles.api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
@@ -46,9 +46,12 @@ services:
       - Mongo__ConnectionString=mongodb://love2u_mongo
     ports:
       - "5103:80"
+    volumes:
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
 networks:
   default:
     external:
       name: love2u
       
+
 

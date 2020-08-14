@@ -1,6 +1,6 @@
 using System;
 
-namespace Love2u.ProfileAPI
+namespace Love2u.Profiles.API
 {
     public class WeatherForecast
     {

@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Events;
 
-namespace Love2u.ProfileAPI
+namespace Love2u.Profiles.API
 {
     public class Program
     {
@@ -32,7 +32,7 @@ namespace Love2u.ProfileAPI
                 Log.Fatal(exc, "Error starting profile API");
                 return 1;
             }
-            finally 
+            finally
             {
                 Log.CloseAndFlush();
             }
@@ -40,14 +40,14 @@ namespace Love2u.ProfileAPI
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder
-                        .ConfigureLogging((hsotingContext, logging) =>
-                        {
-                            logging.AddSerilog(dispose: true);
-                        })
-                        .UseStartup<Startup>();
-                }).UseSerilog();
+            .ConfigureWebHostDefaults(webBuilder =>
+            {
+                webBuilder
+                    .ConfigureLogging((hsotingContext, logging) =>
+                    {
+                        logging.AddSerilog(dispose: true);
+                    })
+                    .UseStartup<Startup>();
+            }).UseSerilog();
     }
 }
