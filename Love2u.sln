@@ -31,6 +31,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Profile", "Profile", "{DBF5
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Love2u.Profiles.API", "src\Services\Profile\Love2u.Profiles.API\Love2u.Profiles.API.csproj", "{4072B58D-0DB0-4445-8A1E-FC86D34E8D23}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "elastic", "elastic", "{314CF70A-09BB-4CA3-ADBA-1797D6C5219D}"
+	ProjectSection(SolutionItems) = preProject
+		elastic\docker-compose.elastic.yml = elastic\docker-compose.elastic.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

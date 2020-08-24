@@ -1,20 +1,19 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 using Serilog;
+using Serilog.Events;
+using Serilog.Formatting.Elasticsearch;
+using Serilog.Sinks.Elasticsearch;
+using System;
+using System.IO;
+using System.Reflection;
 
 namespace Love2u.APIGateway.Web
 {
@@ -30,12 +29,20 @@ namespace Love2u.APIGateway.Web
 
         public static int Main(string[] args)
         {
+            var configuration = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile(
+                    $"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json",
+                    optional: true)
+                .Build();
+
             Log.Logger = new LoggerConfiguration()
                 .ReadFrom.Configuration(Configuration)
                 .Enrich.FromLogContext()
                 .WriteTo.Debug()
                 .WriteTo.Console(
                     outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj} {Properties:j}{NewLine}{Exception}")
+                .WriteTo.Elasticsearch(ConfigureElasticSink())
                 .CreateLogger();
 
             try
@@ -55,6 +62,24 @@ namespace Love2u.APIGateway.Web
             {
                 Log.CloseAndFlush();
             }
+        }
+
+        private static ElasticsearchSinkOptions ConfigureElasticSink()
+        {
+            var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            var host = Environment.GetEnvironmentVariable("ELASTICSEARCH_HOSTS");
+
+            if (string.IsNullOrWhiteSpace(host)) throw new ArgumentNullException($"Invalid environment variable 'ELASTICSEARCH_HOSTS'.");
+
+            return new ElasticsearchSinkOptions(new Uri(host))
+            {
+                AutoRegisterTemplate = true,
+                AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv7,
+                CustomFormatter = new ExceptionAsObjectJsonFormatter(renderMessage: true),
+                IndexFormat = $"{Assembly.GetExecutingAssembly().GetName().Name?.ToLower().Replace(".", "-")}-{environment?.ToLower().Replace(".", "-")}-{DateTime.UtcNow:yyyy-MM}",
+                MinimumLogEventLevel = LogEventLevel.Information,
+                EmitEventFailure = EmitEventFailureHandling.ThrowException
+            };
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
@@ -82,7 +107,7 @@ namespace Love2u.APIGateway.Web
                         })
                         .ConfigureLogging((hostingContext, logging) =>
                         {
-                            logging.AddSerilog(dispose: true);
+                            logging.AddSerilog(logger: Log.Logger);
                         })
                         .UseIIS()
                         .Configure(app =>
@@ -93,7 +118,7 @@ namespace Love2u.APIGateway.Web
                             app.UseOcelot().Wait();
                         });
                 })
-            .UseSerilog();
+                .UseSerilog(logger: Log.Logger);
         
         private static void AddAuthenticationMiddleware(IServiceCollection services)
         {

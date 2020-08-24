@@ -1,0 +1,81 @@
+version: '2.2'
+services:
+  elastic01:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.8.1
+    container_name: elastic01
+    environment:
+      - node.name=elastic01
+      - cluster.name=elastic-cluster
+      - discovery.seed_hosts=elastic02,elastic03
+      - cluster.initial_master_nodes=elastic01
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - data01:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+    networks:
+      - elastic
+  elastic02:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.8.1
+    container_name: elastic02
+    environment:
+      - node.name=elastic02
+      - cluster.name=elastic-cluster
+      - discovery.seed_hosts=elastic01,elastic03
+      - cluster.initial_master_nodes=elastic01
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - data02:/usr/share/elasticsearch/data
+    networks:
+      - elastic
+  elastic03:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.8.1
+    container_name: elastic03
+    environment:
+      - node.name=elastic03
+      - cluster.name=elastic-cluster
+      - discovery.seed_hosts=elastic01,elastic02
+      - cluster.initial_master_nodes=elastic01
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - data03:/usr/share/elasticsearch/data
+    networks:
+      - elastic
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.8.1
+    environment:
+      SERVER_NAME: kibana-server
+      ELASTICSEARCH_HOSTS: http://elastic01:9201
+    ports:
+      - "5601:5601"
+    networks:
+      - elastic
+    depends_on:
+      - elastic01
+      - elastic02
+      - elastic03
+volumes:
+  data01:
+    driver: local
+  data02:
+    driver: local
+  data03:
+    driver: local
+networks:
+  elastic:
+    driver: bridge

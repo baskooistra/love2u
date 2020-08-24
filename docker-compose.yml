@@ -1,18 +1,33 @@
 version: '3.4'
 services:
+  elastic:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.8.1
+    container_name: elastic
+    volumes:
+      - elastic-data:/usr/share/elasticsearch/data
+  kibana:
+    container_name: kibana
+    image: docker.elastic.co/kibana/kibana:7.8.1
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elastic:9200
+    ports:
+      - 5601:5601
+    depends_on:
+      - elastic
   love2u_sql:
     image: mcr.microsoft.com/mssql/server:2019-latest
-    environment:
-        SA_PASSWORD: "H!lde_1984"
-        ACCEPT_EULA: "Y"
   redisdb:
     image: redis:alpine
   love2u_mongo:
     image: mongo:latest
     restart: always
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: love2u_admin
-      MONGO_INITDB_ROOT_PASSWORD: H!lde_1984
+  love2u.angular:
+    image: ${DOCKER_REGISTRY-}love2uweb
+    build:
+      context: .
+      dockerfile: src/web/Love2u.Angular/Dockerfile
+    depends_on:
+      - love2u.identityprovider
   love2u.identityprovider:
     image: ${DOCKER_REGISTRY-}love2uidentityprovider
     build:
@@ -21,13 +36,6 @@ services:
     depends_on:
       - love2u_sql
       - redisdb
-  love2u.angular:
-    image: ${DOCKER_REGISTRY-}love2uweb
-    build:
-      context: .
-      dockerfile: src/web/Love2u.Angular/Dockerfile
-    depends_on:
-      - love2u.identityprovider
   love2u.apigateway.web:
     image: ${DOCKER_REGISTRY-}love2uapigatewayweb
     build:
@@ -40,4 +48,6 @@ services:
       dockerfile: src/Services/Profile/Love2u.Profiles.API/Dockerfile
     depends_on:
       - love2u_mongo
-
+volumes:
+  elastic-data:
+    driver: local

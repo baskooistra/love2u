@@ -38,7 +38,7 @@ export class HomeComponent {
         const headers = new HttpHeaders({
           'Authorization': 'Bearer ' + token
         });
-        return this.http.get("https://localhost:44352/api/user/profile/userprofile", { headers: headers });
+        return this.http.post("https://localhost:44352/api/user/profile/userprofile", null, { headers: headers });
       })).subscribe(result => {
         console.log(result);
     });
