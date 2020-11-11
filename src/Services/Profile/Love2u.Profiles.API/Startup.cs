@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Love2u.Profiles.API.Extensions;
+using Love2u.Profiles.Application.Extensions;
+using Love2u.Profiles.InfraStructure.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -28,6 +30,8 @@ namespace Love2u.Profiles.API
         {
             services.AddControllers();
             services.AddAuthenticationMiddleware(Configuration["IDENTITY_PROVIDER_URL"]);
+            services.AddCommandHandlers();
+            services.AddInfrastructure(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

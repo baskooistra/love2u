@@ -25,10 +25,6 @@ services:
     environment:
         SA_PASSWORD: "H!lde_1984"
         ACCEPT_EULA: "Y"
-  love2u_mongo:
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: love2u_admin
-      MONGO_INITDB_ROOT_PASSWORD: H!lde_1984
   love2u.angular:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
@@ -70,12 +66,14 @@ services:
   love2u.profiles.api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://+:80
+      - ASPNETCORE_URLS=https://+:443;http://+:80
       - IDENTITY_PROVIDER_URL=http://love2u.identityprovider
       - ELASTICSEARCH_HOSTS=http://elastic:9200
-      - Mongo__ConnectionString=mongodb://love2u_mongo
+      - CosmosDB__Uri=https://l2u-tst-cosmos-db.documents.azure.com:443/
+      - CosmosDB__Key=Q5IzeWPlA9e3tLz4aoyBcfPF6gq6BuK6dG4mhIKMZVJaQ5lCofVKp9OhtAjLb40H2qHeopSTezjc3QOkgO3s0A==
     ports:
       - "5103:80"
+      - "44353:443"
     volumes:
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
 networks:

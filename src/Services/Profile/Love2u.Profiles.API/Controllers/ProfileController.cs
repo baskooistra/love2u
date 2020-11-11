@@ -1,12 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
-using Love2u.Profiles.API;
-using Love2u.Profiles.API.Models;
+using Love2u.Profiles.Domain.Requests.Commands;
+using Love2u.Profiles.Domain.Requests.Queries;
+using Love2u.Profiles.Domain.Requests.Shared;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace Love2u.ProfileAPI.Controllers
 {
@@ -15,52 +22,58 @@ namespace Love2u.ProfileAPI.Controllers
     [Route("user/profile")]
     public class ProfileController : ControllerBase
     {
-        private readonly ILogger<ProfileController> _logger;
+        private readonly IMediator _mediator;
 
-        public ProfileController(ILogger<ProfileController> logger)
+        public ProfileController(IMediator mediator)
         {
-            _logger = logger;
+            Log.Debug($"Initiated profiles controller for route {Url}");
+            _mediator = mediator;
         }
 
-        [HttpGet("userprofile")]
-        public IEnumerable<string> Get()
+        [HttpGet("")]
+        public async Task<ActionResult> Get() => Result(await _mediator.Send(new FindUserProfileQuery(RetrieveUserId())));
+
+        [HttpPost("")]
+        public async Task<ActionResult> Post(AddUserProfileCommand command, CancellationToken cancellationToken)
         {
-            try
-            {
-                _logger.LogInformation("Start fetching user profile.");
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
-            
-            return new[] { "Test value 1", "Test value 2" };
+            command.UserId = RetrieveUserId();
+
+            return Result(await _mediator.Send(command, cancellationToken));
         }
 
-        [HttpPost("userprofile")]
-        public async Task<UserProfile> Post()
-        {
-            var userId = User.Claims.Single(c => c.Type == "sub").Value;
+        [HttpDelete("")]
+        public async Task<ActionResult> Delete() => Result(await _mediator.Send(new DeleteUserProfileCommand(RetrieveUserId())));
 
-            var profile = new UserProfile
+        private ActionResult Result<T>(BaseResult<T> result)
+        {
+            return result switch
             {
-                Id = new Guid(), UserId = Guid.Parse(userId), Description = "Test description"
+                null => throw new ArgumentNullException("Argument 'result' cannot be null."),
+                var r when r.Errors.Any() => BadRequest(r.Errors.Select(e => e.Message)),
+                BaseResult<bool> r when !r.Result => StatusCode((int)HttpStatusCode.InternalServerError),
+                BaseResult<bool> r when r.Result => Ok("Request handled succesfully."),
+                BaseResult<T> r when r.Result != null => Ok(new ResourceResult<T>(r.Result, r.Etag)),
+                QueryResult<T> r when r.Result == null => NotFound(),
+                _ => NoContent()
             };
+        }
 
-            try
-            {
-                _logger.LogInformation("Start indexing user profile.");
-                var repo = new ElasticRepository();
-                await repo.SaveProfile(profile);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
+        private Guid RetrieveUserId() 
+        {
+            var userIdClaim = User.Claims.Single(claim => claim.Type == JwtRegisteredClaimNames.Sub);
+            return Guid.Parse(userIdClaim.Value);
+        }
 
-            return profile;
+        private class ResourceResult<T>
+        {
+            public T Resource { get; }
+            public string Etag { get; }
+
+            public ResourceResult(T resource, string etag)
+            {
+                Resource = resource;
+                Etag = etag;
+            }
         }
     }
 }

@@ -19,8 +19,6 @@ namespace Love2u.Profiles.API
     {
         public static int Main(string[] args)
         {
-            var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-
             Log.Logger = new LoggerConfiguration()
                 .Enrich.FromLogContext()
                 .WriteTo.Debug(LogEventLevel.Debug)
