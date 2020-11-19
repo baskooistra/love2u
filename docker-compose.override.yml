@@ -25,6 +25,8 @@ services:
     environment:
         SA_PASSWORD: "H!lde_1984"
         ACCEPT_EULA: "Y"
+    volumes:
+      - ${APPDATA}/SQL Server 2019/Love2u:/var/opt/mssql/data
   love2u.angular:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development

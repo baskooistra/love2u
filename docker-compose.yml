@@ -18,9 +18,6 @@ services:
     image: mcr.microsoft.com/mssql/server:2019-latest
   redisdb:
     image: redis:alpine
-  love2u_mongo:
-    image: mongo:latest
-    restart: always
   love2u.angular:
     image: ${DOCKER_REGISTRY-}love2uweb
     build:
@@ -46,8 +43,6 @@ services:
     build:
       context: .
       dockerfile: src/Services/Profile/Love2u.Profiles.API/Dockerfile
-    depends_on:
-      - love2u_mongo
 volumes:
   elastic-data:
     driver: local

@@ -1,19 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net;
-using System.Reflection;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Love2u.Profiles.Domain.Models;
-using Love2u.Profiles.Domain.Models.Aggregates.UserProfile;
 using Love2u.Profiles.Domain.Models.Shared;
 using Love2u.Profiles.Domain.Services;
 using Love2u.Profiles.InfraStructure.CosmosDB.UserProfiles;
 using Love2u.Profiles.InfraStructure.Extensions;
-using MediatR;
 using Microsoft.Azure.Cosmos;
-using Microsoft.Extensions.Options;
 using Serilog;
 
 namespace Love2u.Profiles.InfraStructure.CosmosDB

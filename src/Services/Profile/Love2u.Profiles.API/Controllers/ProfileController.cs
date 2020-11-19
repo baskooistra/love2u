@@ -24,6 +24,8 @@ namespace Love2u.ProfileAPI.Controllers
     {
         private readonly IMediator _mediator;
 
+        private record ResourceResult<T>(T Resource, string Etag);
+
         public ProfileController(IMediator mediator)
         {
             Log.Debug($"Initiated profiles controller for route {Url}");
@@ -37,6 +39,16 @@ namespace Love2u.ProfileAPI.Controllers
         public async Task<ActionResult> Post(AddUserProfileCommand command, CancellationToken cancellationToken)
         {
             command.UserId = RetrieveUserId();
+
+            return Result(await _mediator.Send(command, cancellationToken));
+        }
+
+        [HttpPut("")]
+        public async Task<ActionResult> Put(UpdateUserProfileCommand command, CancellationToken cancellationToken)
+        {
+            var signedInUserId = RetrieveUserId();
+            if (command.UserId != signedInUserId)
+                return Unauthorized();
 
             return Result(await _mediator.Send(command, cancellationToken));
         }
@@ -62,18 +74,6 @@ namespace Love2u.ProfileAPI.Controllers
         {
             var userIdClaim = User.Claims.Single(claim => claim.Type == JwtRegisteredClaimNames.Sub);
             return Guid.Parse(userIdClaim.Value);
-        }
-
-        private class ResourceResult<T>
-        {
-            public T Resource { get; }
-            public string Etag { get; }
-
-            public ResourceResult(T resource, string etag)
-            {
-                Resource = resource;
-                Etag = etag;
-            }
         }
     }
 }

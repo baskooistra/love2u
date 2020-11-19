@@ -24,7 +24,7 @@ namespace Love2u.Profiles.Domain.Requests.Shared
 
         protected BaseResult(DataStoreResult<T> result)
         {
-            Result = result.Resource;
+            Result = result.Item;
             Etag = result.Etag;
         }
 

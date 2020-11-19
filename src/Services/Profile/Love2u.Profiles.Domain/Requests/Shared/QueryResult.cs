@@ -1,4 +1,5 @@
-﻿using Love2u.Profiles.Domain.Models.Shared;
+﻿using Love2u.Profiles.Domain.Models;
+using Love2u.Profiles.Domain.Models.Shared;
 using System;
 using System.Collections.Generic;
 using System.Text;

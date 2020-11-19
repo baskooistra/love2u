@@ -10,6 +10,8 @@ using System.Text;
 
 namespace Love2u.Profiles.InfraStructure.Extensions
 {
+    public record CosmosDBOptions(string Uri, string Key, string DatabaseName);
+    
     public static class ServiceCollectionExtensions
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration) 
