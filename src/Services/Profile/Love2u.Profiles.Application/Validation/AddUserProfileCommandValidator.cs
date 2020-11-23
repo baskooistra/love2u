@@ -19,8 +19,7 @@ namespace Love2u.Profiles.Application.Validation
                 .WithMessage("User ID is required when saving user profile.");
 
             RuleFor(command => command.EyeColor)
-                .Must(eyeColor => Enumeration
-                .FromName<EyeColor>(eyeColor) != null)
+                .Must(eyeColor => Enumeration.FromName<EyeColor>(eyeColor) != null)
                 .When(command => !string.IsNullOrWhiteSpace(command.EyeColor))
                 .WithMessage("Specified eye color is not a valid value.");
         }
