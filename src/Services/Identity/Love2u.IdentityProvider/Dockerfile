@@ -5,10 +5,10 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
-COPY ["src/Services/Love2u.IdentityProvider/Love2u.IdentityProvider.csproj", "src/Services/Love2u.IdentityProvider/"]
-RUN dotnet restore "src/Services/Love2u.IdentityProvider/Love2u.IdentityProvider.csproj"
+COPY ["Love2u.IdentityProvider.csproj", "Identity/"]
+RUN dotnet restore "Identity/Love2u.IdentityProvider.csproj"
+WORKDIR "/src/Identity/"
 COPY . .
-WORKDIR "/src/src/Services/Love2u.IdentityProvider"
 RUN dotnet build "Love2u.IdentityProvider.csproj" -c Release -o /app/build
 
 FROM build AS publish
