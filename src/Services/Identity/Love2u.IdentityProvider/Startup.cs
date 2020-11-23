@@ -33,8 +33,8 @@ namespace Love2u.IdentityProvider
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //string connectionString = Configuration.GetConnectionString("DefaultConnection");
-            //string migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
+            string connectionString = Configuration.GetConnectionString("DefaultConnection");
+            string migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
 
             services.Configure<CookiePolicyOptions>(options =>
             {
@@ -42,35 +42,35 @@ namespace Love2u.IdentityProvider
                 options.CheckConsentNeeded = context => true;
             });
 
-            //services.AddDbContext<Love2uIdentityContext>(options =>
-            //    options.UseSqlServer(connectionString));
-            //services.AddDefaultIdentity<User>(options => 
-            //{
-            //    options.ClaimsIdentity.UserIdClaimType = JwtRegisteredClaimNames.Sub;
-            //}).AddEntityFrameworkStores<Love2uIdentityContext>();
-            //services.AddScoped<IUserClaimsPrincipalFactory<User>, ClaimsPrincipalFactory>();
-            //services.AddIdentityServer()
-            //    .AddDeveloperSigningCredential()
-            //    .AddOperationalStore(options =>
-            //    {
-            //        options.ConfigureDbContext = builder =>
-            //            builder.UseSqlServer(connectionString, sql => sql.MigrationsAssembly(migrationsAssembly));
-            //    })
-            //    .AddConfigurationStore(options =>
-            //    {
-            //        options.ConfigureDbContext = builder =>
-            //            builder.UseSqlServer(connectionString, sql => sql.MigrationsAssembly(migrationsAssembly));
-            //    });
+            services.AddDbContext<Love2uIdentityContext>(options =>
+                options.UseSqlServer(connectionString));
+            services.AddDefaultIdentity<User>(options => 
+            {
+                options.ClaimsIdentity.UserIdClaimType = JwtRegisteredClaimNames.Sub;
+            }).AddEntityFrameworkStores<Love2uIdentityContext>();
+            services.AddScoped<IUserClaimsPrincipalFactory<User>, ClaimsPrincipalFactory>();
+            services.AddIdentityServer()
+                .AddDeveloperSigningCredential()
+                .AddOperationalStore(options =>
+                {
+                    options.ConfigureDbContext = builder =>
+                        builder.UseSqlServer(connectionString, sql => sql.MigrationsAssembly(migrationsAssembly));
+                })
+                .AddConfigurationStore(options =>
+                {
+                    options.ConfigureDbContext = builder =>
+                        builder.UseSqlServer(connectionString, sql => sql.MigrationsAssembly(migrationsAssembly));
+                });
 
-            //if (Environment.IsDockerHosted()) 
-            //{
-            //    var redis = ConnectionMultiplexer.Connect(Configuration.GetConnectionString("RedisConnection"));
-            //    services.AddDataProtection(opts =>
-            //    {
-            //        opts.ApplicationDiscriminator = "Love2u.IdentityProvider";
-            //    })
-            //    .PersistKeysToStackExchangeRedis(redis, "DataProtection-Keys");
-            //}
+            if (Environment.IsDockerHosted()) 
+            {
+                var redis = ConnectionMultiplexer.Connect(Configuration.GetConnectionString("RedisConnection"));
+                services.AddDataProtection(opts =>
+                {
+                    opts.ApplicationDiscriminator = "Love2u.IdentityProvider";
+                })
+                .PersistKeysToStackExchangeRedis(redis, "DataProtection-Keys");
+            }
 
             services.AddAuthentication();
             services.AddMvc()
@@ -86,7 +86,7 @@ namespace Love2u.IdentityProvider
                     })).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.AddRazorPages();
             services.AddControllers();
-            //services.AddTransient<IProfileService, ProfileService>();
+            services.AddTransient<IProfileService, ProfileService>();
             services.AddCors(options =>
             {
                 options.AddPolicy("Love2u.Angular", policyBuilder =>
@@ -122,7 +122,7 @@ namespace Love2u.IdentityProvider
 
             app.UseStaticFiles();
             app.UseCookiePolicy();
-            //app.UseIdentityServer();
+            app.UseIdentityServer();
             app.UseHttpsRedirection();
             app.UseEndpoints(endpoints =>
             {
