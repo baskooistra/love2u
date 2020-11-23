@@ -20,15 +20,15 @@ namespace Love2u.IdentityProvider
             {
                 var services = scope.ServiceProvider;
 
-                try
-                {
-                    await SeedData.EnsureSeedDataAsync(services);
-                }
-                catch (Exception exc)
-                {
-                    var logger = services.GetRequiredService<ILogger<Program>>();
-                    logger.LogError(exc, "An error occurred while migrating and seeding the database.");
-                }
+                //try
+                //{
+                //    await SeedData.EnsureSeedDataAsync(services);
+                //}
+                //catch (Exception exc)
+                //{
+                //    var logger = services.GetRequiredService<ILogger<Program>>();
+                //    logger.LogError(exc, "An error occurred while migrating and seeding the database.");
+                //}
             }
 
             host.Run();

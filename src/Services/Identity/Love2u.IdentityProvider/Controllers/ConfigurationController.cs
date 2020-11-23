@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using IdentityServer4.Extensions;
 using IdentityServer4.Models;
 using Love2u.IdentityProvider.Configuration;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -23,6 +24,18 @@ namespace Love2u.IdentityProvider.Controllers
         }
 
         public IConfiguration Configuration { get; }
+
+        [AllowAnonymous]
+        [HttpGet("_configuration")]
+        public IActionResult GetShit() 
+        {
+            return Ok(new
+            {
+                Name = "Bas Kooistra",
+                Age = 34,
+                Gender = "Male"
+            });
+        }
 
         [HttpGet("_configuration/{clientId}")]
         public IActionResult GetClientRequestParameters([FromRoute]string clientId)
