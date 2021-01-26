@@ -31,7 +31,8 @@ namespace Love2u.ProfileAPI.Controllers
         }
 
         [HttpGet("")]
-        public async Task<ActionResult> Get() => Result(await _mediator.Send(new FindUserProfileQuery(RetrieveUserId())));
+        public async Task<ActionResult> Get() => 
+            Result(await _mediator.Send(new FindUserProfileQuery(RetrieveUserId())));
 
         [HttpPost("")]
         public async Task<ActionResult> Post(AddUserProfileCommand command, CancellationToken cancellationToken)
@@ -42,7 +43,12 @@ namespace Love2u.ProfileAPI.Controllers
         }
 
         [HttpDelete("")]
-        public async Task<ActionResult> Delete() => Result(await _mediator.Send(new DeleteUserProfileCommand(RetrieveUserId())));
+        public async Task<ActionResult> Delete() => 
+            Result(await _mediator.Send(new DeleteUserProfileCommand(RetrieveUserId())));
+
+        [HttpPut("")]
+        public async Task<ActionResult> Put(UpdateUserProfileCommand command, CancellationToken cancellationToken) =>
+            Result(await _mediator.Send(command, cancellationToken));
 
         private ActionResult Result<T>(BaseResult<T> result)
         {
