@@ -40,7 +40,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Love2u.Profiles.Domain", "s
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Love2u.Profiles.InfraStructure", "src\Services\Profile\Love2u.Profiles.InfraStructure\Love2u.Profiles.InfraStructure.csproj", "{F3366336-FC07-4F1F-ABDC-D273C0FFCC6E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Love2u.Profiles.Application", "src\Services\Profile\Love2u.Profiles.Application\Love2u.Profiles.Application.csproj", "{8B55B42C-3A44-4953-8C06-BBA469C88BA0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Love2u.Profiles.Application", "src\Services\Profile\Love2u.Profiles.Application\Love2u.Profiles.Application.csproj", "{8B55B42C-3A44-4953-8C06-BBA469C88BA0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "infra", "infra", "{4F3C358C-5912-4EB0-85DB-0AFED0A27904}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "rabbitmq", "rabbitmq", "{B1087F10-DE73-497C-8B05-DA10F9B08511}"
+	ProjectSection(SolutionItems) = preProject
+		definitions.json = definitions.json
+		rabbitmq.conf = rabbitmq.conf
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -165,6 +173,7 @@ Global
 		{DBFF44B5-7A87-4473-B698-920E7B8A2177} = {DBF5096D-6018-4643-AEB5-05475B60DFDF}
 		{F3366336-FC07-4F1F-ABDC-D273C0FFCC6E} = {DBF5096D-6018-4643-AEB5-05475B60DFDF}
 		{8B55B42C-3A44-4953-8C06-BBA469C88BA0} = {DBF5096D-6018-4643-AEB5-05475B60DFDF}
+		{B1087F10-DE73-497C-8B05-DA10F9B08511} = {4F3C358C-5912-4EB0-85DB-0AFED0A27904}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C2909369-5A02-457E-84F0-F4D532DD9E41}

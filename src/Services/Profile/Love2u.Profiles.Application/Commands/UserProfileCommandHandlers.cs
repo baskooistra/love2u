@@ -1,4 +1,5 @@
-﻿using Love2u.Profiles.Domain.Models.Aggregates.UserProfile;
+﻿using Love2u.Profiles.Domain.Events;
+using Love2u.Profiles.Domain.Models.Aggregates.UserProfile;
 using Love2u.Profiles.Domain.Models.Shared;
 using Love2u.Profiles.Domain.Requests.Commands;
 using Love2u.Profiles.Domain.Requests.Queries;
@@ -49,7 +50,10 @@ namespace Love2u.Profiles.Application.Commands
             var result = await _store.AddItem(CreateUserProfile(request), cancellationToken);
 
             Log.Information("Succesfully saved user profile.", result);
-            return new AddUserProfileCommandResult(request, result);
+
+            var commandResult = new AddUserProfileCommandResult(request, result);
+            commandResult.AddDomainEvent(UserProfileCreatedDomainEvent.Create(result.Resource, result.Etag));
+            return commandResult;
         }
 
         async Task<DeleteUserProfileCommandResult> IRequestHandler<DeleteUserProfileCommand, DeleteUserProfileCommandResult>.Handle(DeleteUserProfileCommand request, CancellationToken cancellationToken)
@@ -65,7 +69,10 @@ namespace Love2u.Profiles.Application.Commands
             else
             {
                 Log.Information("Succesfully deleted user profile.", result);
-                return new DeleteUserProfileCommandResult(request, result); 
+                
+                var commandResult = new DeleteUserProfileCommandResult(request, result);
+                commandResult.AddDomainEvent(UserProfileDeletedDomainEvent.Create(request.UserId, result.Etag));
+                return commandResult;
             }
         }
 
@@ -82,7 +89,10 @@ namespace Love2u.Profiles.Application.Commands
             else
             {
                 Log.Information("Succesfully updated user profile.", result);
-                return new UpdateUserProfileCommandResult(request, result);
+
+                var commandResult = new UpdateUserProfileCommandResult(request, result);
+                commandResult.AddDomainEvent(UserProfileUpdatedDomainEvent.Create(result.Resource, result.Etag));
+                return commandResult;
             }
         }
 

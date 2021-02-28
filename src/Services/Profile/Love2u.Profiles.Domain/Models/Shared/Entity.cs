@@ -34,27 +34,6 @@ namespace Love2u.Profiles.Domain.Models
             _hashCode = HashCode.Combine(Id, Created, Updated);
         }
 
-        private List<INotification> _domainEvents;
-
-        [JsonIgnore]
-        public IReadOnlyCollection<INotification> DomainEvents => _domainEvents?.AsReadOnly();
-
-        public void AddDomainEvent(INotification eventItem)
-        {
-            _domainEvents ??= new List<INotification>();
-            _domainEvents.Add(eventItem);
-        }
-
-        public void ClearDomainEvents()
-        {
-            _domainEvents?.Clear();
-        }
-
-        public void RemoveDomainEvent(INotification eventItem)
-        {
-            _domainEvents.Remove(eventItem);
-        }
-
         public override bool Equals(object obj)
         {
             if (!(obj is Entity))

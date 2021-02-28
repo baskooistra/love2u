@@ -52,6 +52,11 @@ namespace Love2u.ProfileAPI.Controllers
 
         private ActionResult Result<T>(BaseResult<T> result)
         {
+            if (!result.HasError || result.HasDomainEvents) 
+            {
+                SendDomainEvents(result.DomainEvents);
+            }
+
             return result switch
             {
                 null => throw new ArgumentNullException("Argument 'result' cannot be null."),
@@ -62,6 +67,14 @@ namespace Love2u.ProfileAPI.Controllers
                 QueryResult<T> r when r.Result == null => NotFound(),
                 _ => NoContent()
             };
+        }
+
+        private void SendDomainEvents(IReadOnlyCollection<INotification> domainEvents) 
+        {
+            foreach (var domainEvent in domainEvents) 
+            {
+                _mediator.Publish(domainEvent);
+            }
         }
 
         private Guid RetrieveUserId() 

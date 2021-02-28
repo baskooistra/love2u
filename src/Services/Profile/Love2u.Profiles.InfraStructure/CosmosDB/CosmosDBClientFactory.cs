@@ -36,7 +36,7 @@ namespace Love2u.Profiles.InfraStructure.CosmosDB
         {
             var client = new CosmosClient(options.Uri, options.Key);
             var store = new CosmosDBStore<T>(client, options);
-
+            
             try
             {
                 var database = await InitializeDatabase(client, options.DatabaseName);

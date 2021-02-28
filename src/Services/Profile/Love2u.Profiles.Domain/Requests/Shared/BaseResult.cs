@@ -1,4 +1,5 @@
 ﻿using Love2u.Profiles.Domain.Models.Shared;
+using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,28 @@ namespace Love2u.Profiles.Domain.Requests.Shared
         private readonly List<DomainError> _errors = new List<DomainError>();
 
         public IEnumerable<DomainError> Errors => _errors;
+
+        private List<INotification> _domainEvents;
+
+        public IReadOnlyCollection<INotification> DomainEvents => _domainEvents?.AsReadOnly();
+
+        public void AddDomainEvent(INotification eventItem)
+        {
+            _domainEvents ??= new List<INotification>();
+            _domainEvents.Add(eventItem);
+        }
+
+        public void ClearDomainEvents()
+        {
+            _domainEvents?.Clear();
+        }
+
+        public void RemoveDomainEvent(INotification eventItem)
+        {
+            _domainEvents.Remove(eventItem);
+        }
+
+        public bool HasDomainEvents => _domainEvents.Any();
 
         public bool HasError => _errors.Any();
 
